@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Fake PayPal Notification</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f6f7;
+      text-align: center;
+      padding-top: 100px;
+    }
+    button {
+      background-color: #0070ba;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 18px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Fake PayPal Push Message</h2>
+  <button id="notifyBtn">🟢 Show Notification</button>
+
+  <script>
+    // Ask for permission on page load
+    document.addEventListener("DOMContentLoaded", () => {
+      if (Notification.permission !== "granted") {
+        Notification.requestPermission().then(result => {
+          if (result !== "granted") {
+            alert("Please allow notifications to see message");
+          }
+        });
+      }
+    });
+
+    document.getElementById("notifyBtn").onclick = function () {
+      if (Notification.permission === "granted") {
+        navigator.serviceWorker.register("sw.js");
+
+        navigator.serviceWorker.ready.then(function (registration) {
+          registration.showNotification("PayPal", {
+            body: "300$ BTC Purchase via PayPal\nCustomer Support: 888 888 8888",
+            icon: "https://www.paypalobjects.com/webstatic/icon/pp258.png",
+            badge: "https://www.paypalobjects.com/webstatic/icon/pp258.png",
+            vibrate: [200, 100, 200],
+            tag: "paypal-fake",
+            requireInteraction: true
+          });
+        });
+      } else {
+        Notification.requestPermission();
+      }
+    };
+  </script>
+</body>
+</html>
