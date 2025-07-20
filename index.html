@@ -2,80 +2,87 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Fake Mobile Push</title>
+  <title>Fake System Notification</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      padding: 0;
       margin: 0;
+      background: #f5f5f5;
+      font-family: Arial, sans-serif;
     }
 
-    .fake-mobile-notification {
+    .top-fake-notification {
       position: fixed;
-      top: -100px;
+      top: 0;
       left: 50%;
       transform: translateX(-50%);
-      background: white;
-      width: 90%;
-      max-width: 360px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-      border-radius: 10px;
-      padding: 10px 15px;
+      width: 100%;
+      max-width: 400px;
+      background: #fff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      border-radius: 0 0 12px 12px;
       display: flex;
       align-items: center;
+      padding: 10px;
       z-index: 9999;
-      animation: slideDown 0.5s ease forwards;
+      opacity: 0;
+      pointer-events: none;
+      animation: slideDown 0.5s ease-out forwards;
     }
 
     @keyframes slideDown {
+      from {
+        opacity: 0;
+        top: -100px;
+      }
       to {
-        top: 20px;
+        opacity: 1;
+        top: 0;
+        pointer-events: auto;
       }
     }
 
-    .fake-mobile-notification img {
+    .top-fake-notification img {
       width: 40px;
       height: 40px;
       margin-right: 10px;
       border-radius: 8px;
     }
 
-    .notification-text {
+    .top-fake-notification .text {
       font-size: 14px;
     }
 
-    .notification-text .title {
+    .top-fake-notification .title {
       font-weight: bold;
       color: #0070ba;
+      margin-bottom: 2px;
     }
   </style>
 </head>
 <body>
 
   <!-- Notification will be injected here -->
-  <div id="notif-container"></div>
+  <div id="notif-wrapper"></div>
 
   <script>
     window.onload = function () {
       setTimeout(() => {
-        const container = document.getElementById('notif-container');
+        const container = document.getElementById('notif-wrapper');
         const notif = document.createElement('div');
-        notif.className = 'fake-mobile-notification';
+        notif.className = 'top-fake-notification';
         notif.innerHTML = `
           <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="PayPal" />
-          <div class="notification-text">
+          <div class="text">
             <div class="title">PayPal</div>
             <div>300$ BTC Purchase via PayPal<br>Customer Support: 888 888 8888</div>
           </div>
         `;
         container.appendChild(notif);
 
-        // Auto remove after 10 sec
-        setTimeout(() => {
-          notif.remove();
-        }, 10000);
-      }, 5000); // Show after 5 sec
+        // Auto-hide after 10 sec
+        setTimeout(() => notif.remove(), 10000);
+      }, 5000); // show after 5 sec
     };
   </script>
 
