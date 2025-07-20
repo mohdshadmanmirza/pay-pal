@@ -6,56 +6,82 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f5f6f7;
       text-align: center;
       padding-top: 100px;
+      background: #f5f5f5;
     }
-    button {
-      background-color: #0070ba;
-      color: white;
-      border: none;
-      padding: 15px 30px;
-      font-size: 18px;
+
+    .fake-notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 320px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      display: none;
+      padding: 15px;
+      z-index: 9999;
+      animation: slidein 0.4s ease-out;
+    }
+
+    @keyframes slidein {
+      from {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fake-notification img {
+      width: 40px;
+      height: 40px;
+      float: left;
+      margin-right: 10px;
       border-radius: 5px;
-      cursor: pointer;
+    }
+
+    .fake-notification .title {
+      font-weight: bold;
+      margin-top: 0;
+      font-size: 16px;
+    }
+
+    .fake-notification .message {
+      font-size: 14px;
+      margin-top: 4px;
     }
   </style>
 </head>
 <body>
 
-  <h2>Fake PayPal Push Message</h2>
-  <button id="notifyBtn">🟢 Show Notification</button>
+  <h2>PayPal Alert System</h2>
+
+  <div id="notification" class="fake-notification">
+    <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="PayPal">
+    <div>
+      <div class="title">PayPal</div>
+      <div class="message">300$ BTC Purchase via PayPal<br>Customer Support: 888 888 8888</div>
+    </div>
+  </div>
 
   <script>
-    // Ask for permission on page load
-    document.addEventListener("DOMContentLoaded", () => {
-      if (Notification.permission !== "granted") {
-        Notification.requestPermission().then(result => {
-          if (result !== "granted") {
-            alert("Please allow notifications to see message");
-          }
-        });
-      }
-    });
+    // Wait 5 seconds and show fake notification
+    window.onload = function () {
+      setTimeout(() => {
+        const notif = document.getElementById('notification');
+        notif.style.display = 'block';
 
-    document.getElementById("notifyBtn").onclick = function () {
-      if (Notification.permission === "granted") {
-        navigator.serviceWorker.register("sw.js");
-
-        navigator.serviceWorker.ready.then(function (registration) {
-          registration.showNotification("PayPal", {
-            body: "300$ BTC Purchase via PayPal\nCustomer Support: 888 888 8888",
-            icon: "https://www.paypalobjects.com/webstatic/icon/pp258.png",
-            badge: "https://www.paypalobjects.com/webstatic/icon/pp258.png",
-            vibrate: [200, 100, 200],
-            tag: "paypal-fake",
-            requireInteraction: true
-          });
-        });
-      } else {
-        Notification.requestPermission();
-      }
+        // Hide after 10 seconds (optional)
+        setTimeout(() => {
+          notif.style.display = 'none';
+        }, 10000);
+      }, 5000); // 5 seconds
     };
   </script>
+
 </body>
 </html>
