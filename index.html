@@ -2,84 +2,80 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Fake PayPal Notification</title>
+  <title>Fake Mobile Push</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      text-align: center;
-      padding-top: 100px;
       background: #f5f5f5;
+      padding: 0;
+      margin: 0;
     }
 
-    .fake-notification {
+    .fake-mobile-notification {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 320px;
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      display: none;
-      padding: 15px;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      width: 90%;
+      max-width: 360px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      border-radius: 10px;
+      padding: 10px 15px;
+      display: flex;
+      align-items: center;
       z-index: 9999;
-      animation: slidein 0.4s ease-out;
+      animation: slideDown 0.5s ease forwards;
     }
 
-    @keyframes slidein {
-      from {
-        opacity: 0;
-        transform: translateY(50px);
-      }
+    @keyframes slideDown {
       to {
-        opacity: 1;
-        transform: translateY(0);
+        top: 20px;
       }
     }
 
-    .fake-notification img {
+    .fake-mobile-notification img {
       width: 40px;
       height: 40px;
-      float: left;
       margin-right: 10px;
-      border-radius: 5px;
+      border-radius: 8px;
     }
 
-    .fake-notification .title {
-      font-weight: bold;
-      margin-top: 0;
-      font-size: 16px;
-    }
-
-    .fake-notification .message {
+    .notification-text {
       font-size: 14px;
-      margin-top: 4px;
+    }
+
+    .notification-text .title {
+      font-weight: bold;
+      color: #0070ba;
     }
   </style>
 </head>
 <body>
 
-  <h2>PayPal Alert System</h2>
-
-  <div id="notification" class="fake-notification">
-    <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="PayPal">
-    <div>
-      <div class="title">PayPal</div>
-      <div class="message">300$ BTC Purchase via PayPal<br>Customer Support: 888 888 8888</div>
-    </div>
-  </div>
+  <!-- Notification will be injected here -->
+  <div id="notif-container"></div>
 
   <script>
-    // Wait 5 seconds and show fake notification
     window.onload = function () {
       setTimeout(() => {
-        const notif = document.getElementById('notification');
-        notif.style.display = 'block';
+        const container = document.getElementById('notif-container');
+        const notif = document.createElement('div');
+        notif.className = 'fake-mobile-notification';
+        notif.innerHTML = `
+          <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="PayPal" />
+          <div class="notification-text">
+            <div class="title">PayPal</div>
+            <div>300$ BTC Purchase via PayPal<br>Customer Support: 888 888 8888</div>
+          </div>
+        `;
+        container.appendChild(notif);
 
-        // Hide after 10 seconds (optional)
+        // Auto remove after 10 sec
         setTimeout(() => {
-          notif.style.display = 'none';
+          notif.remove();
         }, 10000);
-      }, 5000); // 5 seconds
+      }, 5000); // Show after 5 sec
     };
   </script>
 
