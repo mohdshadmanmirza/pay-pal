@@ -1,90 +1,54 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Fake System Notification</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🔔 Instant Notification</title>
+
+  <!-- OneSignal SDK -->
+  <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+
+  <script>
+    window.OneSignal = window.OneSignal || [];
+    OneSignal.push(function() {
+      OneSignal.init({
+        appId: "d37e0300-cfaa-4f8b-af3a-1799d75893fe",  // ✅ तेरा App ID
+        autoRegister: true,
+        notifyButton: {
+          enable: true
+        },
+        promptOptions: {
+          slidedown: {
+            enabled: true,
+            autoPrompt: true  // ✅ जैसे ही लोड हो — allow popup खुले
+          }
+        },
+        allowLocalhostAsSecureOrigin: true
+      });
+    });
+  </script>
+
   <style>
     body {
-      margin: 0;
-      background: #f5f5f5;
+      background-color: #111;
+      color: white;
       font-family: Arial, sans-serif;
-    }
-
-    .top-fake-notification {
-      position: fixed;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 400px;
-      background: #fff;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      border-radius: 0 0 12px 12px;
       display: flex;
+      justify-content: center;
       align-items: center;
-      padding: 10px;
-      z-index: 9999;
-      opacity: 0;
-      pointer-events: none;
-      animation: slideDown 0.5s ease-out forwards;
+      height: 100vh;
+      text-align: center;
     }
-
-    @keyframes slideDown {
-      from {
-        opacity: 0;
-        top: -100px;
-      }
-      to {
-        opacity: 1;
-        top: 0;
-        pointer-events: auto;
-      }
-    }
-
-    .top-fake-notification img {
-      width: 40px;
-      height: 40px;
-      margin-right: 10px;
-      border-radius: 8px;
-    }
-
-    .top-fake-notification .text {
-      font-size: 14px;
-    }
-
-    .top-fake-notification .title {
-      font-weight: bold;
-      color: #0070ba;
-      margin-bottom: 2px;
+    .container {
+      max-width: 400px;
     }
   </style>
 </head>
 <body>
-
-  <!-- Notification will be injected here -->
-  <div id="notif-wrapper"></div>
-
-  <script>
-    window.onload = function () {
-      setTimeout(() => {
-        const container = document.getElementById('notif-wrapper');
-        const notif = document.createElement('div');
-        notif.className = 'top-fake-notification';
-        notif.innerHTML = `
-          <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="PayPal" />
-          <div class="text">
-            <div class="title">PayPal</div>
-            <div>300$ BTC Purchase via PayPal<br>Customer Support: 888 888 8888</div>
-          </div>
-        `;
-        container.appendChild(notif);
-
-        // Auto-hide after 10 sec
-        setTimeout(() => notif.remove(), 10000);
-      }, 5000); // show after 5 sec
-    };
-  </script>
-
+  <div class="container">
+    <h1>🔔 Instant Notification</h1>
+    <p>Allow notifications to stay updated!</p>
+  </div>
 </body>
 </html>
